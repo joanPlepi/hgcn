@@ -158,6 +158,9 @@ def load_data_nc(dataset, use_feats, data_path, split_seed):
         elif dataset == 'airport':
             adj, features, labels = load_data_airport(dataset, data_path, return_label=True)
             val_prop, test_prop = 0.15, 0.15
+        elif dataset == 'twitter':
+            adj, features, labels = load_data_airport(dataset, data_path, return_label=True)
+            val_prop, test_prop = 0.15, 0.15
         else:
             raise FileNotFoundError('Dataset {} is not supported.'.format(dataset))
         idx_val, idx_test, idx_train = split_data(labels, val_prop, test_prop, seed=split_seed)
@@ -254,3 +257,14 @@ def load_data_airport(dataset_str, data_path, return_label=False):
     else:
         return sp.csr_matrix(adj), features
 
+def load_data_twitter(dataset_str, data_path, return_label=False):
+    graph = pkl.load(open(os.path.join(data_path, dataset_str + '.p'), 'rb'))
+    adj = nx.adjacency_matrix(graph)
+    features = np.array([graph.node[u]['feat'] for u in graph.nodes()])
+    if return_label:
+        label_idx = len(features[0]) - 1
+        labels = features[:, label_idx]
+        features = features[:, :label_idx]
+        return sp.csr_matrix(adj), features, labels
+    else:
+        return sp.csr_matrix(adj), features
