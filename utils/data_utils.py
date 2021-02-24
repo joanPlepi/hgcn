@@ -159,7 +159,7 @@ def load_data_nc(dataset, use_feats, data_path, split_seed):
             adj, features, labels = load_data_airport(dataset, data_path, return_label=True)
             val_prop, test_prop = 0.15, 0.15
         elif dataset == 'twitter':
-            adj, features, labels = load_data_airport(dataset, data_path, return_label=True)
+            adj, features, labels = load_data_twitter(dataset, data_path, return_label=True)
             val_prop, test_prop = 0.15, 0.15
         else:
             raise FileNotFoundError('Dataset {} is not supported.'.format(dataset))
